@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2020-7-21 10:44:11 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="cn.lhj.sshweb.model.People" table="PEOPLE">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="phoneNo" type="java.lang.String">
+            <column name="PHONENO" />
+        </property>
+        <property name="address" type="java.lang.String">
+            <column name="ADDRESS" />
+        </property>
+        <property name="regDate" type="java.util.Date">
+            <column name="REGDATE" />
+        </property>
+        <property name="username" type="java.lang.String">
+            <column name="USERNAME" />
+        </property>
+        <property name="passwd" type="java.lang.String">
+            <column name="PASSWD" />
+        </property>
+    </class>
+</hibernate-mapping>

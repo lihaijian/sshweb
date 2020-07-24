@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd"
+>
+	<!-- spring和springmvc包扫描重复，在这里配置各自扫各自的。 -->
+	<context:component-scan base-package="cn.lhj.sshweb">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+	</context:component-scan>
+	<context:property-placeholder location="classpath:c3p0.properties"/>
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${driverClass}"></property>
+  		<property name="jdbcUrl" value="${jdbcUrl}"></property>
+  		<property name="user" value="${user}"></property>
+  		<property name="password" value="${password}"></property>
+  
+  		<!--当数据库连接不足的时候，向数据库申请的连接数量  -->
+    	<property name="acquireIncrement" value="${acquireIncrement}"></property>
+    
+    	<!--初始化数据库连接池的数量  -->
+    	<property name="initialPoolSize" value="${initialPoolSize}"></property>
+    
+		<!--连接池中最少的数据库连接数的数量-->
+    	<property name="minPoolSize" value="${minPoolSize}"></property>
+    
+    	<!--连接池中最大的数据库连接数的数量-->
+    	<property name="maxPoolSize" value="${maxPoolSize}"></property>
+
+    	<!-- 数据库连接池中可以维护的statement的最大数量 -->
+    	<property name="maxStatements" value="${maxStatements}"></property> 
+    
+    	<!-- 每个连接可以同时使用的statement的最大数量  -->
+   		<property name="maxStatementsPerConnection" value="${maxStatementsPerConnection}"></property>
+	</bean>
+	
+	<!-- 整合hibernate的配置 -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="configLocation" value="classpath:hibernate.cfg.xml"></property>
+		<property name="mappingLocations" value="classpath:cn/lhj/sshweb/model/*.hbm.xml"></property>
+	</bean>
+	
+	<!-- 配置声明事务 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true"/>
+			<tx:method name="find*" read-only="true"/>
+			<tx:method name="load*" read-only="true"/>
+			<tx:method name="select*" read-only="true"/>
+			<tx:method name="*" read-only="false"/>		
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 事务的切入点配置,service方法都配置事务 -->
+	<aop:config>
+		<aop:pointcut expression="execution(* cn.lhj.sshweb.service.*.*(..))" id="txPointCut"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
+	</aop:config>
+</beans>
