@@ -155,6 +155,11 @@ public class TestController {
 		return "redirect:/users";
 	}
 	
+	/**
+	 * 将输入的user格式化处理。
+	 * @param user
+	 * @return
+	 */
 	@RequestMapping(value = "/convertuser",method = RequestMethod.POST)
 	public String convertUser(User user) {
 		System.out.println("user="+user);
