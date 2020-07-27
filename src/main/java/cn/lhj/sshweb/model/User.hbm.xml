@@ -14,6 +14,12 @@
         <property name="birthday" type="java.util.Date">
             <column name="birthday" />
         </property>
+        <property name="height" type="java.lang.Double">
+            <column name="height" />
+        </property>
+        <property name="email" type="java.lang.String">
+            <column name="email" />
+        </property>
         <many-to-one name="dpt" class="cn.lhj.sshweb.model.Department" fetch="join">
             <column name="dpt_id" />
         </many-to-one>

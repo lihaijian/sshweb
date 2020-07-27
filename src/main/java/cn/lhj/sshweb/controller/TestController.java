@@ -7,13 +7,16 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,7 +32,7 @@ import cn.lhj.sshweb.service.UserService;
 import javassist.expr.NewArray;
 
 @Controller
-public class TestController {
+public class TestController{
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -100,13 +103,7 @@ public class TestController {
 		}
 	}
 	
-	@InitBinder
-	public void initBinder(WebDataBinder dataBinder) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		sdf.setLenient(false);//必须是符合日期格式，例如没有13月，32日这种，如果不符合，则报错。没有智能。
-		dataBinder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));	
-	}
-
+	
 	/**
 	 * 更新用户
 	 * 
@@ -138,7 +135,17 @@ public class TestController {
 	 * @return
 	 */
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
-	public String addUser(User user) {
+	public String addUser(@Valid User user,BindingResult err,ModelMap modelMap) {
+		System.out.println("In adduser");
+		if(err.getErrorCount()>0) {
+			System.out.println("新增的时候参数有不合法的内容,不合法的总数是："+err.getErrorCount());
+			for(FieldError fe:err.getFieldErrors()) {
+				System.out.println("===="+fe.getField()+":"+fe.getDefaultMessage());
+			}
+			//modelMap.addAttribute("user", new User());
+			modelMap.addAttribute("dpts", departmentService.getAllDepartments());
+			return "add";
+		}
 		userService.insert(user);
 		return "redirect:/users";
 	}

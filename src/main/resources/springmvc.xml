@@ -19,13 +19,21 @@
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 	
-	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="converters">
 			<set>
 				<bean class="cn.lhj.sshweb.web.UserConvert"></bean>
 			</set>
 		</property>
 	</bean>
+	
+	<!-- 配置国际化，个性化配置jsr303校验错误信息 -->
+	<bean id ="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>i18n</value>
+		</property>
+	</bean>
+	
 	<mvc:annotation-driven conversion-service="conversionService"/>
 	<!-- js,css,静态资源图片不让视图解析器解释它 -->
 	<mvc:default-servlet-handler/>

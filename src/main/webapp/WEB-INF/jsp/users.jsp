@@ -35,6 +35,8 @@
 			<td>用户名</td>
 			<td>部门id</td>
 			<td>生日</td>
+			<td>身高</td>
+			<td>邮箱</td>
 			<td>部门名称</td>
 			<td>操作</td>
 		</tr>
@@ -45,6 +47,8 @@
 				<td>${user.username}</td>
 				<td>${user.dpt.id}</td>
 				<td>${user.birthday}</td>
+				<td>${user.height}</td>
+				<td>${user.email}</td>
 				<td>${user.dpt.dptName}</td>
 				<td><a
 					href="${pageContext.request.contextPath}/user/${user.id}">修改</a>|<a

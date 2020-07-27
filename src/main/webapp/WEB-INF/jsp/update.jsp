@@ -11,6 +11,8 @@
 		<form:hidden path="id"/>
 		用户名:<form:input path="username"/></br></br>
 		生日:<form:input path="birthday"/></br></br>
+		邮箱:<form:input path="email" /></br></br>
+		身高:<form:input path="height" /></br></br>
 		部门:<form:select path="dpt.id" items="${dpts}" itemValue="id" itemLabel="dptName"></form:select></br></br>
 		<input type="submit" value="修改"/>
 	</form:form>
