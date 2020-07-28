@@ -29,6 +29,19 @@
     <form id="delform" action="" method="post">
     	<input type="hidden" name="_method" value="delete">
     </form>
+    
+    <form  action="${pageContext.request.contextPath}/jsonUploadFile" method="post" enctype="multipart/form-data">
+    	文件:<input type="file" name="file"><br>
+    	说明:<input type="text" name="mark"><br>
+    	<input type="submit" value="提交">
+    </form>
+    
+     <form  action="${pageContext.request.contextPath}/UploadFile" method="post" enctype="multipart/form-data">
+    	文件:<input type="file" name="file"><br>
+    	说明:<input type="text" name="mark"><br>
+    	<input type="submit" value="提交">
+    </form>
+    
 	<table border="1">
 		<tr>
 			<td>id</td>
