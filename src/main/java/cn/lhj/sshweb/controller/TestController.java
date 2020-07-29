@@ -253,7 +253,7 @@ public class TestController{
 		File file = new File(path,fileName);
 		System.out.println(file);
 		HttpHeaders headers = new HttpHeaders();
-		String downloadFileName = new String(fileName.getBytes("UTF-8"),"UTF-8");
+		String downloadFileName = new String(fileName.getBytes("UTF-8"),"iso-8859-1");
 		headers.setContentDispositionFormData("attachment", downloadFileName);
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 		return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),headers,HttpStatus.CREATED);
